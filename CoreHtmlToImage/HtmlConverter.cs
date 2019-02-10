@@ -42,7 +42,7 @@ namespace CoreHtmlToImage
             }
         }
         
-/// <summary>
+        /// <summary>
         /// Converts HTML string to image
         /// </summary>
         /// <param name="html">HTML string</param>
