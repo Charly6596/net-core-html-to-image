@@ -10,9 +10,9 @@ namespace CoreHtmlToImage
     /// </summary>
     public class HtmlConverter
     {
-        private string toolFilename = "wkhtmltoimage.exe";
+        private readonly string toolFilename = "wkhtmltoimage.exe";
         private readonly string directory;
-        private  string toolFilepath;
+        private readonly string toolFilepath;
 
         public HtmlConverter(string toolFilepath)
         {
@@ -42,7 +42,7 @@ namespace CoreHtmlToImage
             }
         }
         
-/// <summary>
+        /// <summary>
         /// Converts HTML string to image
         /// </summary>
         /// <param name="html">HTML string</param>
