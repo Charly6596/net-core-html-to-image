@@ -10,21 +10,30 @@ namespace CoreHtmlToImage
     /// </summary>
     public class HtmlConverter
     {
-        private const string toolFilename = "wkhtmltoimage.exe";
-        private static readonly string directory;
-        private static readonly string toolFilepath;
+        private string toolFilename = "wkhtmltoimage.exe";
+        private readonly string directory;
+        private  string toolFilepath;
 
-        static HtmlConverter()
+        public HtmlConverter(string toolFilepath)
+        {
+            directory = AppContext.BaseDirectory;
+            this.toolFilepath = toolFilepath;
+        }
+        
+        public HtmlConverter()
         {
             directory = AppContext.BaseDirectory;
             toolFilepath = Path.Combine(directory, toolFilename);
+            EnsureToolExists();
+        }
 
+        private void EnsureToolExists()
+        {
             if (!File.Exists(toolFilepath))
             {
                 var assembly = typeof(HtmlConverter).GetTypeInfo().Assembly;
                 var type = typeof(HtmlConverter);
                 var ns = type.Namespace;
-
                 using (var resourceStream = assembly.GetManifestResourceStream($"{ns}.{toolFilename}"))
                 using (var fileStream = File.OpenWrite(toolFilepath))
                 {
@@ -32,8 +41,8 @@ namespace CoreHtmlToImage
                 }
             }
         }
-
-        /// <summary>
+        
+/// <summary>
         /// Converts HTML string to image
         /// </summary>
         /// <param name="html">HTML string</param>
@@ -63,8 +72,10 @@ namespace CoreHtmlToImage
             var imageFormat = format.ToString().ToLower();
             var filename = Path.Combine(directory, $"{Guid.NewGuid().ToString()}.{imageFormat}");
 
-            Process process = Process.Start(new ProcessStartInfo(toolFilepath, $"--quality {quality} --width {width} -f {imageFormat} {url} {filename}")
+            Process process = Process.Start(new ProcessStartInfo()
             {
+                FileName = toolFilepath,
+                Arguments = $"--quality {quality} --width {width} -f {imageFormat} {url} {filename}",
                 WindowStyle = ProcessWindowStyle.Hidden,
                 CreateNoWindow = true,
                 UseShellExecute = false,

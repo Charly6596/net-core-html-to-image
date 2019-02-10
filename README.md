@@ -24,7 +24,12 @@ var converter = new HtmlConverter();
 var bytes = converter.FromUrl("http://google.com");
 File.WriteAllBytes("image.jpg", bytes);
 ```
+## Using a different wkhtmltoimage path
+You can specify where the executable is, useful if running the program in a non Windows machine.
 
+```
+var converter = new HtmlConverter("path/to/wkhtmltoimage");
+```
 ## Optional parameters
 1. width - output document width. Default is 1024.
 2. format - output image format. Default is Jpg.
